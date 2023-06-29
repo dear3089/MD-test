@@ -28,18 +28,21 @@ function getHandScore(input = "") {
     S: 0,
   };
 
+  // calculate score for the same rank cards
   const firstCard = cardsInfo[0];
   const isSameRank = cardsInfo.every((card) => card.rank === firstCard.rank);
   if (isSameRank) {
-    if (firstCard.rank === "A") {
-      return 35;
-    } else {
-      return 32.5;
-    }
+    return firstCard.rank === "A" ? 35 : 32.5;
   }
 
+  // calculate score for the normal cards
   for (const card of cardsInfo) {
-    const score = SPECIAL_RANK_SCORE[card.rank] || card.rank;
+    let score = 0;
+    if (SPECIAL_RANK_SCORE.hasOwnProperty(card.rank)) {
+      score = SPECIAL_RANK_SCORE[card.rank];
+    } else {
+      score = card.rank;
+    }
     cardSuitScores[card.suit] += score;
   }
 
